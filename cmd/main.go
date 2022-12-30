@@ -13,7 +13,7 @@ import (
 )
 
 func cmdExec(action string) {
-	Cmd := exec.Command("sudo uhubctl", "-a "+action, "-p "+config.Port, "-l "+config.Location)
+	Cmd := exec.Command("sudo", "uhubctl", "-a "+action, "-p "+config.Port, "-l "+config.Location)
 
 	if err := Cmd.Run(); err != nil {
 		panic(err)
