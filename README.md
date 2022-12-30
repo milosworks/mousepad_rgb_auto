@@ -12,5 +12,5 @@ A simple go program to automatically turn off and on a mousepad with a toggle sw
 ## Installation
 
 -   Clone this repo and change variable sin `pkg/config/app.go` to your needs, being `port` and `location`, you can also change the **cron** format in `cmd/main.go` to your needs.
--   Use this command to build the binary: `go build cmd/main.go`
--
+-   Use this command to build the binary: `go build -o mousepad_rbg_auto cmd/main.go`
+-   Then use pm2 to run it in the background: `pm2 start mousepad_rbg_auto --name Mousepad RGB Auto`
