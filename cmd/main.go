@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -18,11 +17,21 @@ func cmdExec(action string) {
 	Cmd := exec.Command(CmdString)
 
 	if err := Cmd.Run(); err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 }
 
 func main() {
+	fmt.Println("Program started\nStarting test...")
+
+	cmdExec(config.Actions[0])
+
+	time.Sleep(5 * time.Second)
+
+	cmdExec(config.Actions[1])
+
+	fmt.Println("Test finished with no errors")
+
 	jobs := cron.New()
 
 	jobs.AddFunc("0 0 8 * * *", func() {
