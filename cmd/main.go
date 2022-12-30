@@ -3,10 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
 	"os/exec"
-	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/robfig/cron/v3"
@@ -42,7 +39,5 @@ func main() {
 
 	})
 
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
-	<-stop
+	fmt.Println("Jobs loaded")
 }
