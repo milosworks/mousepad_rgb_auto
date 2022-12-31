@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/robfig/cron/v3"
+	"github.com/go-co-op/gocron"
 	"github.com/vyrekxd/exec_cmd_cronjob/pkg/config"
 )
 
@@ -31,9 +31,9 @@ func main() {
 
 	fmt.Println("Test finished with no errors")
 
-	jobs := cron.New()
+	scheduler := gocron.NewScheduler(time.Now().Location())
 
-	jobs.AddFunc("0 0 8 * * *", func() {
+	scheduler.Day().At("8:00").Do(func() {
 		t := time.Now()
 
 		cmdExec(config.Actions[1])
@@ -41,24 +41,31 @@ func main() {
 		fmt.Println("Mousepad is now on: " + t.Format(time.Kitchen))
 	})
 
-	jobs.AddFunc("0 0 22 * * *", func() {
+	scheduler.Day().At("22:00").Do(func() {
 		t := time.Now()
 
 		cmdExec(config.Actions[0])
 
 		fmt.Println("Mousepad is now off: " + t.Format(time.Kitchen))
-
 	})
 
-	jobs.Start()
+	scheduler.Every(1).Day().At("13:56").Do(func() {
+		t := time.Now()
 
-	fmt.Println("Jobs loaded and started")
+		cmdExec("toggle")
+
+		fmt.Println("Mousepad is now toggled: " + t.Format(time.Kitchen))
+	})
+
+	scheduler.StartAsync()
+
+	fmt.Println("Scheduler loaded with jobs and started")
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-stop
 
-	jobs.Stop()
+	scheduler.Stop()
 
-	fmt.Println("Jobs stopped and program stopped")
+	fmt.Println("\nJobs stopped and program stopped")
 }
