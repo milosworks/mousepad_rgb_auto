@@ -50,7 +50,9 @@ func main() {
 
 	})
 
-	fmt.Println("Jobs loaded")
+	jobs.Start()
+
+	fmt.Println("Jobs loaded and started")
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
