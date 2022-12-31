@@ -33,7 +33,7 @@ func main() {
 
 	scheduler := gocron.NewScheduler(time.Now().Location())
 
-	scheduler.Day().At("8:00").Do(func() {
+	scheduler.Every(1).Day().At("8:00").Do(func() {
 		t := time.Now()
 
 		cmdExec(config.Actions[1])
@@ -41,20 +41,12 @@ func main() {
 		fmt.Println("Mousepad is now on: " + t.Format(time.Kitchen))
 	})
 
-	scheduler.Day().At("22:00").Do(func() {
+	scheduler.Every(1).Day().At("22:00").Do(func() {
 		t := time.Now()
 
 		cmdExec(config.Actions[0])
 
 		fmt.Println("Mousepad is now off: " + t.Format(time.Kitchen))
-	})
-
-	scheduler.Every(1).Day().At("13:56").Do(func() {
-		t := time.Now()
-
-		cmdExec("toggle")
-
-		fmt.Println("Mousepad is now toggled: " + t.Format(time.Kitchen))
 	})
 
 	scheduler.StartAsync()
